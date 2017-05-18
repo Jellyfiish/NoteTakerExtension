@@ -4,6 +4,7 @@ import Pin from "./Pin";
 import Nav from "./Nav";
 import List from "./List";
 import AuthService from "./utils/AuthService";
+import { AUTH0_CLIENT_ID, AUTH0_DOMAIN } from '../config/config';
 
 class App extends React.Component {
   constructor(props) {
@@ -14,11 +15,11 @@ class App extends React.Component {
     this.handleSignout = this.handleSignout.bind(this);
 
     this.auth = new AuthService(
-      "7ahU6Olf4SuRFf3B3lDGVuY6DGP0hj5T",
-      "dhsiao89.auth0.com",
+      AUTH0_CLIENT_ID,
+      AUTH0_DOMAIN,
       this.handleAuthenticate
     );
-    
+
     this.state = {
       data: { urls: [] },
       loggedIn: this.auth.loggedIn()
