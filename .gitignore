@@ -1,3 +1,4 @@
 /node_modules
 mongod.exe
 /public/bundle.js
+/.vscode
