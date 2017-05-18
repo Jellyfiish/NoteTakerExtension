@@ -16,6 +16,7 @@ exports.usersGet = (req, res) => {
 //Handle User Post Request
 exports.userPost = (req, res) => {
   //send name/user_id in body
+  console.log(req.body);
   User.find({user_id: req.body.user_id}, (err, user) => {
     if (err) {
       console.error(err);
@@ -99,11 +100,11 @@ exports.userAddNotes = (req, res) => {
       var pages = user.urls.map(site => site.name);
 
       if(pages.includes(req.body.uri)) {
-        user.urls[pages.indexOf(req.body.uri)].pins.push(req.body.note);
+        user.urls[pages.indexOf(req.body.uri)].pins.push(JSON.stringify({note: req.body.note, color: req.body.color}));
       } else {
         user.urls.push({
           name: req.body.uri,
-          pins: [req.body.note]
+          pins: [JSON.stringify({note: req.body.note, color: req.body.color})],
         });
       }
       user.markModified('urls');
