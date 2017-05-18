@@ -4,10 +4,11 @@ import AuthService from "utils/AuthService";
 import Container from "./Container";
 import Home from "./Home/Home";
 import Login from "./Login/Login";
+import { AUTH0_CLIENT_ID, AUTH0_DOMAIN } from '../../../config/config';
 
 const auth = new AuthService(
-  "7ahU6Olf4SuRFf3B3lDGVuY6DGP0hj5T",
-  "dhsiao89.auth0.com"
+  AUTH0_CLIENT_ID,
+  AUTH0_DOMAIN
 );
 
 // validate authentication for private routes
