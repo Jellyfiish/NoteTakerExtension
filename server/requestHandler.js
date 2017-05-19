@@ -16,7 +16,6 @@ exports.usersGet = (req, res) => {
 //Handle User Post Request
 exports.userPost = (req, res) => {
   //send name/user_id in body
-  console.log(req.body);
   User.find({user_id: req.body.user_id}, (err, user) => {
     if (err) {
       console.error(err);
