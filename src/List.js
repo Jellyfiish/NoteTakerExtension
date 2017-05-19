@@ -8,6 +8,7 @@ class List extends React.Component {
   }
 
   render() {
+
     return (
       <div className="panel panel-primary">
         <div className="panel-heading">
@@ -32,16 +33,30 @@ class List extends React.Component {
         </div>
         <div className="panel-body">
           <ul className="list-group">
-            {this.props.data.pins.map((pin, index) => (
+            {this.props.data.pins.map((pin, index) => {
+
+              let pinObj;
+              // handle pin possibly not being a JSON object
+              try {
+                pinObj = JSON.parse(pin);
+              } catch (e) {
+                pinObj = {
+                  note: pin,
+                  color: 'yellow'
+                };
+              }
+
+              return (
               <Pin
-                noteText={JSON.parse(pin).note}
+                noteText={pinObj.note}
                 key={index}
                 username={this.props.name}
                 userId={this.props.userId}
                 listname={this.props.data.name}
                 deleteNote={this.props.deleteNote}
               />
-            ))}
+            );
+          })}
           </ul>
         </div>
       </div>
