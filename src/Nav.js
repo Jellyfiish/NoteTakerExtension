@@ -4,12 +4,8 @@ class Nav extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {filter: ''};
-
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-    this.handleFilterChange = this.handleFilterChange.bind(this);
-    this.handleClearFilter = this.handleClearFilter.bind(this);
   }
 
   handleLogin() {
@@ -19,18 +15,6 @@ class Nav extends React.Component {
   handleLogout() {
     this.props.auth.logout();
     this.props.onSignout();
-  }
-
-  handleFilterChange(event) {
-    this.setState({filter: event.target.value}, () => {
-      this.props.onFilter(this.state.filter);
-    });
-  }
-
-  handleClearFilter() {
-    this.setState({filter: ''}, () => {
-      this.props.onFilter(this.state.filter);
-    });
   }
 
   render() {
@@ -70,12 +54,6 @@ class Nav extends React.Component {
           >
             <ul className="nav navbar-nav">
               <li>{authButton}</li>
-              <li>
-                <form className="form-inline">
-                  <input className="form-control mr-sm-2" type="text" value={this.state.filter} onChange={this.handleFilterChange} />
-                </form>
-              </li>
-              <li><a onClick={this.handleClearFilter}>Clear</a></li>
             </ul>
           </div>
         </div>
