@@ -34,7 +34,7 @@ class List extends React.Component {
           <ul className="list-group">
             {this.props.data.pins.map((pin, index) => (
               <Pin
-                pin={pin}
+                noteText={JSON.parse(pin).note}
                 key={index}
                 username={this.props.name}
                 userId={this.props.userId}
