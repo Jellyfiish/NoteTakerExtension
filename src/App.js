@@ -86,25 +86,23 @@ class App extends React.Component {
     });
   }
 
-  handleFilter(searchString) {
+  parseFilter(searchString) {
     // split on ' site:'
     let searchArray = searchString.split('site:');
-    // if site in searchString, trim
-    let site = searchArray[1] || null;
-    if (site) site = site.trim();
     let searchTerm = searchArray[0] || null;
     if (searchTerm) searchTerm = searchTerm.trim();
+    let site = searchArray[1] || null;
+    if (site) {
+      site = site.trim();
+      site = site === '' ? null : site;
+    };
 
+    return {searchTerm, site};
   }
 
-//   { searchTerm: 'search', site: ' mysite' }
-// > var parse = function(searchString) {
-// ... let temp = searchString.split(' site:');
-// ... let site = temp[1] || null;
-// ... if (site) site = site.trim();
-// ... let searchTerm = temp[0] || null;
-// ... return {searchTerm: searchTerm, site: site};
-// ... }
+  handleFilter(searchString) {
+    let parameters = this.parseFilter(searchString);
+  }
 
   componentDidMount() {
     if (this.state.loggedIn) {
