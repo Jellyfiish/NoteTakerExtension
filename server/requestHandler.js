@@ -101,11 +101,11 @@ exports.userAddNotes = (req, res) => {
       var pages = user.urls.map(site => site.name);
 
       if(pages.includes(req.body.uri)) {
-        user.urls[pages.indexOf(req.body.uri)].pins.push(JSON.stringify({note: req.body.note, color: req.body.color}));
+        user.urls[pages.indexOf(req.body.uri)].pins.push(req.body.note);
       } else {
         user.urls.push({
           name: req.body.uri,
-          pins: [JSON.stringify({note: req.body.note, color: req.body.color})],
+          pins: [req.body.note],
         });
       }
       user.markModified('urls');
