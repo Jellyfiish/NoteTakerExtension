@@ -63,11 +63,11 @@ class App extends React.Component {
   }
 
 //Remove entire url from database
-  deleteList(name, uri) {
+  deleteList(userId, uri) {
     axios({
         method: "delete",
         url: "/api/users/urls",
-        data: { name: name, uri: uri }
+        data: { user_id: userId, uri: uri }
       })
       .then((res) => {
         this.fetch();
@@ -96,7 +96,6 @@ class App extends React.Component {
       this.fetch();
     }
   }
-
   render() {
     return (
       <div>
@@ -105,6 +104,7 @@ class App extends React.Component {
           {this.state.data.urls.map((list, index) => (
             <List
               name={this.state.data.name}
+              userId={this.state.data.user_id}
               data={list}
               key={index}
               deleteList={this.deleteList.bind(this)}

@@ -23,7 +23,7 @@ class List extends React.Component {
               <button
                 className="btn btn-danger"
                 onClick={() =>
-                  this.props.deleteList(this.props.name, this.props.data.name)}
+                  this.props.deleteList(this.props.userId, this.props.data.name)}
               >
                 <span className="glyphicon glyphicon-trash" />
               </button>
@@ -37,6 +37,7 @@ class List extends React.Component {
                 pin={pin}
                 key={index}
                 username={this.props.name}
+                userId={this.props.userId}
                 listname={this.props.data.name}
                 deleteNote={this.props.deleteNote}
               />
