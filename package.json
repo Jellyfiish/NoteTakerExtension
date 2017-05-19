@@ -38,6 +38,7 @@
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "mongodb": "^2.2.26",
+    "morgan": "^1.8.1",
     "webpack": "^2.5.0"
   }
 }
