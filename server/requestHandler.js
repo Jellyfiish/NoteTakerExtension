@@ -44,7 +44,7 @@ exports.userPost = (req, res) => {
 //Handle Remove Url
 exports.urlRemove = (req, res) => {
   //send name/uri/note in body
-  User.findOne({name: req.body.name}, (err, user) => {
+  User.findOne({name: req.body.user_id}, (err, user) => {
     if(err) {
       console.log(err);
       res.status(404).send("Did not find User.");
@@ -64,7 +64,7 @@ exports.urlRemove = (req, res) => {
 //Handle Remove Note
 exports.noteRemove = (req, res) => {
   //send name/url/note in body
-  User.findOne({name: req.body.name}, (err, user) => {
+  User.findOne({name: req.body.user_id}, (err, user) => {
     if(err) {
       console.log(err);
       res.status(404).send('Coud not remove note.');
@@ -89,7 +89,7 @@ exports.noteRemove = (req, res) => {
 //Handle Add note to database for existing Users
 exports.userAddNotes = (req, res) => {
   //send name/uri/note in body
-  if(req.body.note === null || req.body.note === "" || !req.body.user_id) {
+  if(req.body.note === null || req.body.note === "") {
     res.status(404).send('Please hightlight something.');
   } else if (!req.body.user_id) {
     res.status(404).send('Please log in.');
