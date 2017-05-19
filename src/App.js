@@ -13,6 +13,7 @@ class App extends React.Component {
     this.handleAuthenticate = this.handleAuthenticate.bind(this);
     this.fetch = this.fetch.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
 
     this.auth = new AuthService(
       AUTH0_CLIENT_ID,
@@ -85,6 +86,26 @@ class App extends React.Component {
     });
   }
 
+  handleFilter(searchString) {
+    // split on ' site:'
+    let searchArray = searchString.split('site:');
+    // if site in searchString, trim
+    let site = searchArray[1] || null;
+    if (site) site = site.trim();
+    let searchTerm = searchArray[0] || null;
+    if (searchTerm) searchTerm = searchTerm.trim();
+
+  }
+
+//   { searchTerm: 'search', site: ' mysite' }
+// > var parse = function(searchString) {
+// ... let temp = searchString.split(' site:');
+// ... let site = temp[1] || null;
+// ... if (site) site = site.trim();
+// ... let searchTerm = temp[0] || null;
+// ... return {searchTerm: searchTerm, site: site};
+// ... }
+
   componentDidMount() {
     if (this.state.loggedIn) {
       this.fetch();
@@ -99,7 +120,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Nav auth={this.auth} onSignout={this.handleSignout}/>
+        <Nav auth={this.auth} onSignout={this.handleSignout} onFilter={this.handleFilter}/>
         <div className="container">
           {this.state.data.urls.map((list, index) => (
             <List
