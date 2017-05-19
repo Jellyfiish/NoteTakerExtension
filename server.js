@@ -4,9 +4,10 @@ var db = require("./database/db.js");
 var bodyParser = require("body-parser");
 var handle = require("./server/requestHandler.js");
 var app = express();
+var morgan = require('morgan');
 
 app.use(bodyParser.json());
-
+app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
