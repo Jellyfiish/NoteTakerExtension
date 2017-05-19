@@ -89,8 +89,10 @@ exports.noteRemove = (req, res) => {
 //Handle Add note to database for existing Users
 exports.userAddNotes = (req, res) => {
   //send name/uri/note in body
-  if(req.body.note === null || req.body.note === "") {
+  if(req.body.note === null || req.body.note === "" || !req.body.user_id) {
     res.status(404).send('Please hightlight something.');
+  } else if (!req.body.user_id) {
+    res.status(404).send('Please log in.');
   } else {
     User.findOne({user_id: req.body.user_id}, (err, user) => {
       if(err) {
