@@ -48,11 +48,11 @@ class App extends React.Component {
   }
 
 //Remove note from database
-  deleteNote(name, uri, note) {
+  deleteNote(userId, uri, note) {
     axios({
         method: "delete",
         url: "/api/users/notes",
-        data: { name: name, uri: uri, note: note }
+        data: { user_id: userId, uri: uri, note: note }
       })
       .then((res) => {
         this.fetch();
