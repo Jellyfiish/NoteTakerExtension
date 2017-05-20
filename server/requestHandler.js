@@ -120,16 +120,18 @@ exports.userAddNotes = function userAddNotes(req, res) {
 
       var pages = user.urls.map(site => site.name);
 
+      var pin = {
+        text: req.body.note,
+        color: req.body.color || 'yellow',
+        annotation: req.body.annotation || ''
+      };
+
       if(pages.includes(req.body.uri)) {
-        user.urls[pages.indexOf(req.body.uri)].pins.push({
-          text: req.body.note
-        });
+        user.urls[pages.indexOf(req.body.uri)].pins.push(pin);
       } else {
         user.urls.push({
           name: req.body.uri,
-          pins: [{
-            text: req.body.note
-          }],
+          pins: [pin],
         });
       }
       user.markModified('urls');
@@ -137,4 +139,78 @@ exports.userAddNotes = function userAddNotes(req, res) {
       res.status(201).send('Post Success');
     });
   }
+};
+
+// Handle adding an annotation to a note
+exports.userAddAnnotations = function userAddAnnotations(req, res) {
+  //send name/uri/note/annotation in body
+  if (req.body.annotation === null || req.body.annotation === '') {
+    res.status(404).send('Please add an annotation.');
+  } else if (!req.body.user_id) {
+    res.status(404).send('Please log in.');
+  } else {
+    User.findOne({user_id: req.body.user_id}, (err, user) => {
+      if(err) {
+        res.status(404).send('Could not find user.');
+      }
+
+      var pages = user.urls.map(site => site.name);
+
+      if (pages.includes(req.body.uri)) {
+        var pins = user.urls[pages.indexOf(req.body.uri)].pins;
+        var note = pins.find(function(pin) {
+          return pin.text === req.body.note;
+        });
+
+        if (!note) {
+          res.status(404).send('Could not find note');
+          return;
+        }
+
+        note.annotation = req.body.annotation;
+        user.markModified('urls');
+        user.save();
+        res.status(201).send(req.body.annotation);
+      } else {
+        res.status(404).send('Could not find url');
+      }
+    });
+  }
+};
+
+//Handle removing an annotation from a note
+exports.annotationRemove = function annotationRemove(req, res) {
+  //send name/uri/note in body
+  User.findOne({user_id: req.body.user_id}, (err, user) => {
+    if(err) {
+      res.status(404).send('Could not find user.');
+    }
+
+    var pages = user.urls.map(site => site.name);
+
+    if (pages.includes(req.body.uri)) {
+      var pins = user.urls[pages.indexOf(req.body.uri)].pins;
+      var note = pins.find(function(pin) {
+        return pin.text === req.body.note;
+      });
+
+      if (!note) {
+        res.status(404).send('Could not find note');
+        return;
+      }
+
+      if (!note.annotation) {
+        res.status(404).send('No annotation to remove');
+        return;
+      }
+
+      var removedAnnotation = note.annotation;
+      note.annotation = '';
+      user.markModified('urls');
+      user.save();
+      res.status(201).send(removedAnnotation);
+    } else {
+      res.status(404).send('Could not find url');
+    }
+  });
 };
