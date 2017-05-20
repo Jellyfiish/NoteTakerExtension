@@ -35,6 +35,8 @@ app.delete("/api/users/urls", handle.urlRemove);
 app.post("/api/users/notes/", handle.userAddNotes);
 app.delete("/api/users/notes", handle.noteRemove);
 
+app.post('/api/users/notes/annotations/', handle.userAddAnnotations);
+
 var port = process.env.PORT || 3003;
 
 app.listen(port, () => {

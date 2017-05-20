@@ -138,3 +138,39 @@ exports.userAddNotes = function userAddNotes(req, res) {
     });
   }
 };
+
+exports.userAddAnnotations = function userAddAnnotations(req, res) {
+  //send name/uri/note/annotation in body
+  if (req.body.annotation === null || req.body.annotation === '') {
+    res.status(404).send('Please add an annotation.');
+  } else if (!req.body.user_id) {
+    res.status(404).send('Please log in.');
+  } else {
+    User.findOne({user_id: req.body.user_id}, (err, user) => {
+      if(err) {
+        res.status(404).send('Could not find user.');
+      }
+
+      var pages = user.urls.map(site => site.name);
+
+      if (pages.includes(req.body.uri)) {
+        var pins = user.urls[pages.indexOf(req.body.uri)].pins;
+        var note = pins.find(function(pin) {
+          return pin.text === req.body.note;
+        });
+
+        if (!note) {
+          res.status(404).send('Could not find note');
+          return;
+        }
+
+        note.annotation = req.body.annotation;
+        user.markModified('urls');
+        user.save();
+        res.status(201).send('Successfully added annotation: ' + req.body.annotation);
+      } else {
+        res.status(404).send('Could not find url');
+      }
+    });
+  }
+};
