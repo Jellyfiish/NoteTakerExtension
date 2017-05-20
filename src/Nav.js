@@ -20,7 +20,7 @@ class Nav extends React.Component {
   render() {
     var loggedIn = this.props.auth.loggedIn();
     var authButton;
-    
+
   //Conditional to render correct button if logged in or not
     if (!loggedIn) {
       authButton = <a onClick={this.handleLogin}>Login</a>;

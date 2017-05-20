@@ -10,7 +10,7 @@ class Pin extends React.Component {
     return (
         <li className="list-group-item">
           <div className="pin">
-            {this.props.pin}
+            {this.props.noteText}
           </div>
           <button className="btn btn-warning " onClick={() => this.props.deleteNote(this.props.userId, this.props.listname, this.props.pin)} >
             <span className="glyphicon glyphicon-trash"></span>

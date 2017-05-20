@@ -13,6 +13,8 @@ class App extends React.Component {
     this.handleAuthenticate = this.handleAuthenticate.bind(this);
     this.fetch = this.fetch.bind(this);
     this.handleSignout = this.handleSignout.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.handleClearFilter = this.handleClearFilter.bind(this);
 
     this.auth = new AuthService(
       AUTH0_CLIENT_ID,
@@ -21,7 +23,11 @@ class App extends React.Component {
     );
 
     this.state = {
-      data: { urls: [] },
+      data: {
+        urls: [],
+      },
+      filter: '',
+      filteredUrls: [],
       loggedIn: this.auth.loggedIn()
     };
   }
@@ -85,6 +91,84 @@ class App extends React.Component {
     });
   }
 
+  parseFilter(searchString) {
+    // split on ' site:'
+    let hasSite = searchString.indexOf('site:');
+    let hasColor = searchString.indexOf('color:');
+    let searchArray = searchString.split(/site\:|color\:/);
+    let searchTerm = searchArray[0].trim() ? searchArray[0].trim() : null;
+    let site = null;
+    let color = null;
+    if (hasSite >= 0 && hasColor >= 0) {
+      if (hasSite < hasColor) {
+        site = searchArray[1];
+        color = searchArray[2];
+      } else {
+        color = searchArray[1];
+        site = searchArray[2];
+      }
+    } else if (hasSite >= 0) {
+      site = searchArray[1];
+    } else if (hasColor >= 0) {
+      color = searchArray[1];
+    }
+
+    if (site) site = site.trim().length ? site.trim() : null;
+    if (color) color = color.trim().length ? color.trim() : null;
+
+    return {searchTerm, site, color};
+  }
+
+  filterUrls(searchString) {
+    // only rerender if the string is empty and we haven't already set filtered to false
+    if (searchString) {
+      let {searchTerm, site, color} = this.parseFilter(searchString);
+      // Array.slice() does not copy nested arrays, therefore:
+      let urls = JSON.parse(JSON.stringify(this.state.data.urls.slice()));
+      // filter out sites if the "site:" selector is used
+      if (site) {
+        urls = urls.filter(url => url.name.includes(site));
+      }
+      // if no search term is given but there is a site, it will just show everything from that site
+      if (searchTerm || color) {
+        urls = urls.filter(url => {
+          url.pins = url.pins.filter(pin => {
+            // really wish I didn't have to parse each pin everytime this is run, move into backend code?
+            let pinObj;
+            // handle pin possibly not being a JSON object
+            try {
+              pinObj = JSON.parse(pin);
+            } catch (e) {
+              pinObj = {
+                note: pin,
+                color: 'yellow'
+              };
+            }
+            // could either use pinObj.color.includes(color) or do pinObj.color === color. I think there are benefits to either approach.
+            let colorCheck = color ? pinObj.color.includes(color) : true;
+            let noteCheck = searchTerm ? pinObj.note.includes(searchTerm) : true;
+            return colorCheck && noteCheck;
+          });
+          return url.pins.length > 0;
+        });
+      }
+
+      this.setState({filteredUrls: urls});
+    } else if (this.state.filtered) {
+      this.setState({filteredUrls: []});
+    }
+  }
+
+  handleFilterChange(event) {
+    this.setState({filter: event.target.value}, () => {
+      this.filterUrls(this.state.filter);
+    });
+  }
+
+  handleClearFilter() {
+    this.setState({filter: ''});
+  }
+
   componentDidMount() {
     if (this.state.loggedIn) {
       this.fetch();
@@ -97,11 +181,19 @@ class App extends React.Component {
     }
   }
   render() {
+    let urls = this.state.filter.length ? this.state.filteredUrls : this.state.data.urls;
+
     return (
       <div>
-        <Nav auth={this.auth} onSignout={this.handleSignout}/>
+        <Nav auth={this.auth} onSignout={this.handleSignout} />
         <div className="container">
-          {this.state.data.urls.map((list, index) => (
+          <div className="filter-input">
+            <form className="form-inline">
+              <input className="form-control mr-md-2" type="text" value={this.state.filter} onChange={this.handleFilterChange} />
+              <button className="btn my-2 my-sm-0" type="button" onClick={this.handleClearFilter}>Clear</button>
+            </form>
+          </div>
+          {urls.map((list, index) => (
             <List
               name={this.state.data.name}
               userId={this.state.data.user_id}
