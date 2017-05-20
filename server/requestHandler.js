@@ -21,7 +21,15 @@ exports.userPost = (req, res) => {
       console.error(err);
     } else {
       if (user.length === 0) {
-        addNewUser(req, res);
+        addNewUser(req, (err, user) => {
+          if(err) {
+            res.status(404).send("Could not create user.");
+          }
+
+          if(user) {
+            res.status(201).send("New User Created.");
+          }
+        });
       } else {
         res.status(201).send('User Already Exists.');
       }
@@ -29,7 +37,7 @@ exports.userPost = (req, res) => {
   })
 };
 
-function addNewUser(req, res) {
+function addNewUser(req, callback) {
   var account = new User({
     name: req.body.name,
     user_id: req.body.user_id
@@ -37,10 +45,10 @@ function addNewUser(req, res) {
 
   return account.save((err, account) => {
     if(err) {
-      console.log(err);
-      res.status(404).send("Could not create user.");
+      callback(err)
+      
     } else {
-      res.status(201).send("New User Created.");
+      callback(null, true);
     }
   });
 }
@@ -90,7 +98,7 @@ exports.noteRemove = (req, res) => {
 
 //CHROME EXTENSION ENDPOINTS//
 //Handle Add note to database for existing Users
-exports.userAddNotes = (req, res) => {
+exports.userAddNotes = function userAddNotes(req, res) {
   //send name/uri/note in body
   if(req.body.note === null || req.body.note === "") {
     res.status(404).send('Please hightlight something.');
@@ -103,7 +111,9 @@ exports.userAddNotes = (req, res) => {
       }
 
       if(!user) {
-        return addNewUser(req, res);
+        return addNewUser(req, () => {
+          userAddNotes(req, res);
+        });
       }
 
       var pages = user.urls.map(site => site.name);
