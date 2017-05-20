@@ -12,7 +12,7 @@ class Pin extends React.Component {
           <div className="pin">
             {this.props.noteText}
           </div>
-          <button className="btn btn-warning " onClick={() => this.props.deleteNote(this.props.userId, this.props.listname, this.props.pin)} >
+          <button className="btn btn-warning " onClick={() => this.props.deleteNote(this.props.userId, this.props.listname, this.props.noteText)} >
             <span className="glyphicon glyphicon-trash"></span>
           </button>
         <p className="pin-url"></p>
@@ -22,4 +22,3 @@ class Pin extends React.Component {
 }
 
 export default Pin;
-
