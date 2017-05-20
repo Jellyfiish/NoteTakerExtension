@@ -2,4 +2,3 @@
 mongod.exe
 /public/bundle.js
 /.vscode
-config/config.js
