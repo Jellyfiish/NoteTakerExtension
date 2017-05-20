@@ -122,13 +122,15 @@ exports.userAddNotes = function userAddNotes(req, res) {
 
       if(pages.includes(req.body.uri)) {
         user.urls[pages.indexOf(req.body.uri)].pins.push({
-          text: req.body.note
+          text: req.body.note,
+          color: req.body.color,
         });
       } else {
         user.urls.push({
           name: req.body.uri,
           pins: [{
-            text: req.body.note
+            text: req.body.note,
+            color: req.body.color,
           }],
         });
       }
