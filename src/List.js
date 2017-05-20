@@ -35,20 +35,9 @@ class List extends React.Component {
           <ul className="list-group">
             {this.props.data.pins.map((pin, index) => {
 
-              let pinObj;
-              // handle pin possibly not being a JSON object
-              try {
-                pinObj = JSON.parse(pin);
-              } catch (e) {
-                pinObj = {
-                  note: pin,
-                  color: 'yellow'
-                };
-              }
-
               return (
               <Pin
-                noteText={pinObj.note}
+                note={pin}
                 key={index}
                 username={this.props.name}
                 userId={this.props.userId}
