@@ -46,7 +46,7 @@ function addNewUser(req, callback) {
   return account.save((err, account) => {
     if(err) {
       callback(err)
-      
+
     } else {
       callback(null, true);
     }
@@ -84,7 +84,9 @@ exports.noteRemove = (req, res) => {
       var index = pages.indexOf(req.body.uri);
 
       if(index !== -1) {
-        var noteIndex = user.urls[index].pins.indexOf(req.body.note);
+        var noteIndex = user.urls[index].pins.findIndex(function(pin) {
+          return pin.text === req.body.note;
+        });
         if(noteIndex !== -1) {
           user.urls[index].pins.splice(noteIndex, 1);
         }
@@ -119,11 +121,15 @@ exports.userAddNotes = function userAddNotes(req, res) {
       var pages = user.urls.map(site => site.name);
 
       if(pages.includes(req.body.uri)) {
-        user.urls[pages.indexOf(req.body.uri)].pins.push(req.body.note);
+        user.urls[pages.indexOf(req.body.uri)].pins.push({
+          text: req.body.note
+        });
       } else {
         user.urls.push({
           name: req.body.uri,
-          pins: [req.body.note],
+          pins: [{
+            text: req.body.note
+          }],
         });
       }
       user.markModified('urls');
