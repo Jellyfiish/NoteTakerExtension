@@ -8,7 +8,7 @@ export default class AuthService {
     this.authenticateCallback = authenticateCallback;
     this.lock = new Auth0Lock(clientId, domain, {
       auth: {
-        redirectUrl: "http://localhost:3003/",
+        redirectUrl: "https://jellyfiish-noted.herokuapp.com/",
         responseType: "token"
       }
     });
