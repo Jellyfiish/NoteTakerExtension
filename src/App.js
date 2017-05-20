@@ -189,7 +189,14 @@ class App extends React.Component {
         <div className="container">
           <div className="filter-input">
             <form className="form-inline">
-              <input className="form-control mr-md-2" type="text" value={this.state.filter} onChange={this.handleFilterChange} />
+              <input
+                className="form-control mr-md-2"
+                type="text"
+                placeholder="Filter..."
+                title='Filter note content. Use "site:" and "color:" to filter by url and highlight color.'
+                value={this.state.filter}
+                onChange={this.handleFilterChange}
+              />
               <button className="btn my-2 my-sm-0" type="button" onClick={this.handleClearFilter}>Clear</button>
             </form>
           </div>
