@@ -21,19 +21,7 @@ exports.userPost = (req, res) => {
       console.error(err);
     } else {
       if (user.length === 0) {
-        var account = new User({
-          name: req.body.name,
-          user_id: req.body.user_id
-        });
-
-        account.save((err, account) => {
-          if(err) {
-            console.log(err);
-            res.status(404).send("Could not create user.");
-          } else {
-            res.status(201).send("New User Created.");
-          }
-        });
+        addNewUser(req, res);
       } else {
         res.status(201).send('User Already Exists.');
       }
@@ -41,6 +29,21 @@ exports.userPost = (req, res) => {
   })
 };
 
+function addNewUser(req, res) {
+  var account = new User({
+    name: req.body.name,
+    user_id: req.body.user_id
+  });
+
+  return account.save((err, account) => {
+    if(err) {
+      console.log(err);
+      res.status(404).send("Could not create user.");
+    } else {
+      res.status(201).send("New User Created.");
+    }
+  });
+}
 //Handle Remove Url
 exports.urlRemove = (req, res) => {
   //send name/uri/note in body
@@ -89,7 +92,7 @@ exports.noteRemove = (req, res) => {
 //Handle Add note to database for existing Users
 exports.userAddNotes = (req, res) => {
   //send name/uri/note in body
-  if(req.body.note === null || req.body.note === "" || !req.body.user_id) {
+  if(req.body.note === null || req.body.note === "") {
     res.status(404).send('Please hightlight something.');
   } else if (!req.body.user_id) {
     res.status(404).send('Please log in.');
@@ -98,6 +101,11 @@ exports.userAddNotes = (req, res) => {
       if(err) {
         res.status(404).send('Could not find user.');
       }
+
+      if(!user) {
+        return addNewUser(req, res);
+      }
+
       var pages = user.urls.map(site => site.name);
 
       if(pages.includes(req.body.uri)) {
