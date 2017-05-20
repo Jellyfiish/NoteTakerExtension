@@ -120,16 +120,18 @@ exports.userAddNotes = function userAddNotes(req, res) {
 
       var pages = user.urls.map(site => site.name);
 
+      var pin = {
+        text: req.body.note,
+        color: req.body.color || 'yellow',
+        annotation: req.body.annotation || ''
+      };
+
       if(pages.includes(req.body.uri)) {
-        user.urls[pages.indexOf(req.body.uri)].pins.push({
-          text: req.body.note
-        });
+        user.urls[pages.indexOf(req.body.uri)].pins.push(pin);
       } else {
         user.urls.push({
           name: req.body.uri,
-          pins: [{
-            text: req.body.note
-          }],
+          pins: [pin],
         });
       }
       user.markModified('urls');
