@@ -139,6 +139,7 @@ exports.userAddNotes = function userAddNotes(req, res) {
   }
 };
 
+// Handle adding an annotation to a note
 exports.userAddAnnotations = function userAddAnnotations(req, res) {
   //send name/uri/note/annotation in body
   if (req.body.annotation === null || req.body.annotation === '') {
@@ -167,10 +168,47 @@ exports.userAddAnnotations = function userAddAnnotations(req, res) {
         note.annotation = req.body.annotation;
         user.markModified('urls');
         user.save();
-        res.status(201).send('Successfully added annotation: ' + req.body.annotation);
+        res.status(201).send(req.body.annotation);
       } else {
         res.status(404).send('Could not find url');
       }
     });
   }
+};
+
+//Handle removing an annotation from a note
+exports.annotationRemove = function annotationRemove(req, res) {
+  //send name/uri/note in body
+  User.findOne({user_id: req.body.user_id}, (err, user) => {
+    if(err) {
+      res.status(404).send('Could not find user.');
+    }
+
+    var pages = user.urls.map(site => site.name);
+
+    if (pages.includes(req.body.uri)) {
+      var pins = user.urls[pages.indexOf(req.body.uri)].pins;
+      var note = pins.find(function(pin) {
+        return pin.text === req.body.note;
+      });
+
+      if (!note) {
+        res.status(404).send('Could not find note');
+        return;
+      }
+
+      if (!note.annotation) {
+        res.status(404).send('No annotation to remove');
+        return;
+      }
+
+      var removedAnnotation = note.annotation;
+      note.annotation = '';
+      user.markModified('urls');
+      user.save();
+      res.status(201).send(removedAnnotation);
+    } else {
+      res.status(404).send('Could not find url');
+    }
+  });
 };
