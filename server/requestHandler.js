@@ -84,7 +84,9 @@ exports.noteRemove = (req, res) => {
       var index = pages.indexOf(req.body.uri);
 
       if(index !== -1) {
-        var noteIndex = user.urls[index].pins.indexOf(req.body.note);
+        var noteIndex = user.urls[index].pins.findIndex(function(pin) {
+          return pin.text === req.body.note;
+        });
         if(noteIndex !== -1) {
           user.urls[index].pins.splice(noteIndex, 1);
         }
