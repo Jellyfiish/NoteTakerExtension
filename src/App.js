@@ -133,20 +133,8 @@ class App extends React.Component {
       if (searchTerm || color) {
         urls = urls.filter(url => {
           url.pins = url.pins.filter(pin => {
-            // really wish I didn't have to parse each pin everytime this is run, move into backend code?
-            let pinObj;
-            // handle pin possibly not being a JSON object
-            try {
-              pinObj = JSON.parse(pin);
-            } catch (e) {
-              pinObj = {
-                note: pin,
-                color: 'yellow'
-              };
-            }
-            // could either use pinObj.color.includes(color) or do pinObj.color === color. I think there are benefits to either approach.
-            let colorCheck = color ? pinObj.color.includes(color) : true;
-            let noteCheck = searchTerm ? pinObj.note.includes(searchTerm) : true;
+            let colorCheck = color ? pin.color.includes(color) : true;
+            let noteCheck = searchTerm ? pin.text.includes(searchTerm) : true;
             return colorCheck && noteCheck;
           });
           return url.pins.length > 0;
