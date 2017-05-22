@@ -11,7 +11,13 @@ var userSchema = mongoose.Schema({
     pins: [{
       text: String,
       color: String,
-      annotation: String
+      annotation: String,
+      range: {
+        startContainer: String,
+        endContainer: String,
+        startOffset: Number,
+        endOffset: Number
+      }
     }]
   }]
 });
