@@ -168,6 +168,28 @@ class App extends React.Component {
       this.fetch();
     }
   }
+
+  renderFilterBar() {
+    return (
+      <div className="filter-input">
+        <form
+          className="form-inline"
+          onSubmit={event => event.preventDefault()}
+        >
+          <input
+            className="form-control mr-md-2"
+            type="text"
+            placeholder="Filter..."
+            title='Filter note content. Use "site:" and "color:" to filter by url and highlight color.'
+            value={this.state.filter}
+            onChange={this.handleFilterChange}
+          />
+          <button className="btn my-2 my-sm-0" type="button" onClick={this.handleClearFilter}>Clear</button>
+        </form>
+      </div>
+    );
+  }
+
   render() {
     let urls = this.state.filter.length ? this.state.filteredUrls : this.state.data.urls;
 
@@ -175,19 +197,7 @@ class App extends React.Component {
       <div>
         <Nav auth={this.auth} onSignout={this.handleSignout} />
         <div className="container">
-          <div className="filter-input">
-            <form className="form-inline">
-              <input
-                className="form-control mr-md-2"
-                type="text"
-                placeholder="Filter..."
-                title='Filter note content. Use "site:" and "color:" to filter by url and highlight color.'
-                value={this.state.filter}
-                onChange={this.handleFilterChange}
-              />
-              <button className="btn my-2 my-sm-0" type="button" onClick={this.handleClearFilter}>Clear</button>
-            </form>
-          </div>
+          { this.state.loggedIn && this.renderFilterBar() }
           {urls.map((list, index) => (
             <List
               name={this.state.data.name}
