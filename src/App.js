@@ -176,7 +176,10 @@ class App extends React.Component {
         <Nav auth={this.auth} onSignout={this.handleSignout} />
         <div className="container">
           <div className="filter-input">
-            <form className="form-inline">
+            <form
+              className="form-inline"
+              onSubmit={event => event.preventDefault()}
+            >
               <input
                 className="form-control mr-md-2"
                 type="text"
