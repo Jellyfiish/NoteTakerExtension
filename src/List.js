@@ -34,8 +34,6 @@ class List extends React.Component {
         <div className="panel-body">
           <ul className="list-group">
             {this.props.data.pins.map((pin, index) => {
-              console.log(pin);
-
               return (
               <Pin
                 note={pin}

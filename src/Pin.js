@@ -29,10 +29,11 @@ class Pin extends React.Component {
                   className="form-control annotation-input"
                   type="text"
                   placeholder="Enter your annotation..."
+                  ref={(input) => { this.textInput = input; }}
                   id="new-annotation"
                 />
               </div>
-              <button className="btn add-annotation-btn" onClick={() => this.props.addAnnotation(this.props.userId, this.props.listname, this.props.note.text)} >Add Annotation</button>
+              <button className="btn add-annotation-btn" onClick={() => this.props.addAnnotation(this.props.userId, this.props.listname, this.props.note.text, this.textInput.value)} >Add Annotation</button>
             </div>
             }
           </div>
