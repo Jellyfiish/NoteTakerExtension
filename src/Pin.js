@@ -30,7 +30,6 @@ class Pin extends React.Component {
                   type="text"
                   placeholder="Enter your annotation..."
                   ref={(input) => { this.textInput = input; }}
-                  id="new-annotation"
                 />
               </div>
               <button className="btn add-annotation-btn" onClick={() => this.props.addAnnotation(this.props.userId, this.props.listname, this.props.note.text, this.textInput.value)} >Add Annotation</button>
