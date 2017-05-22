@@ -13,6 +13,7 @@
 
 .list-group-item {
   font-size: 1.5em;
+  padding: 0 0 10px 0;
 }
 
 a:visited {
@@ -46,7 +47,6 @@ a:hover {
 .list-group-item .pin {
   white-space: nowrap;
   overflow: hidden;
-  margin-right: 10px;
   text-overflow: ellipsis;
   width: 100%;
 }
@@ -60,4 +60,31 @@ a:hover {
 .filter-input {
   display: flex;
   justify-content: flex-end;
+}
+
+.note-text-container {
+  background-color: #f8f8f8;
+  color: #3164b7;
+  height: 50px;
+}
+
+.pin .btn {
+  float: right;
+  margin-right: 15px;
+  margin-top: 8px;
+}
+
+.note-text {
+  padding: 10px 10px 10px 10px;
+}
+
+.note-annotation {
+  padding: 10px 10px 10px 30px;
+  font-style: italic;
+}
+
+.annotation-input-container {
+  margin-left: 15px;
+  margin-top: 8px;
+  margin-right: 15px;
 }
