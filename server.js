@@ -38,6 +38,8 @@ app.delete("/api/users/notes", handle.noteRemove);
 app.post('/api/users/notes/annotations/', handle.userAddAnnotations);
 app.delete('/api/users/notes/annotations/', handle.annotationRemove);
 
+app.put('/api/users/notes/color', handle.noteColorChange);
+
 var port = process.env.PORT || 3003;
 
 app.listen(port, () => {

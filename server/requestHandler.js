@@ -214,3 +214,38 @@ exports.annotationRemove = function annotationRemove(req, res) {
     }
   });
 };
+
+// Handle changing color of a note
+exports.noteColorChange = function noteColorChange(req, res) {
+  //send name/uri/note/color in body
+  if (!req.body.user_id) {
+    res.status(404).send('Please log in.');
+  } else {
+    User.findOne({user_id: req.body.user_id}, (err, user) => {
+      if (err) {
+        res.status(404).send('Could not find user.');
+      }
+
+      var pages = user.urls.map(site => site.name);
+
+      if (pages.includes(req.body.uri)) {
+        var pins = user.urls[pages.indexOf(req.body.uri)].pins;
+        var note = pins.find(function(pin) {
+          return pin.text === req.body.note;
+        });
+
+        if (!note) {
+          res.status(404).send('Could not find note');
+          return;
+        }
+
+        note.color = req.body.color;
+        user.markModified('urls');
+        user.save();
+        res.status(201).send(req.body.color);
+      } else {
+        res.status(404).send('Could not find url');
+      }
+    });
+  }
+};
