@@ -34,7 +34,6 @@ class List extends React.Component {
         <div className="panel-body">
           <ul className="list-group">
             {this.props.data.pins.map((pin, index) => {
-
               return (
               <Pin
                 note={pin}
@@ -43,6 +42,8 @@ class List extends React.Component {
                 userId={this.props.userId}
                 listname={this.props.data.name}
                 deleteNote={this.props.deleteNote}
+                addAnnotation={this.props.addAnnotation}
+                deleteAnnotation={this.props.deleteAnnotation}
               />
             );
           })}

@@ -68,6 +68,36 @@ class App extends React.Component {
       });
   }
 
+//Remove annotation from database
+  deleteAnnotation(userId, uri, note) {
+    axios({
+        method: "delete",
+        url: "/api/users/notes/annotations",
+        data: { user_id: userId, uri: uri, note: note }
+      })
+      .then((res) => {
+        this.fetch();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
+//Add annotation to the note
+  addAnnotation(userId, uri, note, annotation) {
+    axios({
+        method: "post",
+        url: "/api/users/notes/annotations",
+        data: { user_id: userId, uri: uri, annotation: annotation, note: note }
+      })
+      .then((res) => {
+        this.fetch();
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }
+
 //Remove entire url from database
   deleteList(userId, uri) {
     axios({
@@ -206,6 +236,8 @@ class App extends React.Component {
               key={index}
               deleteList={this.deleteList.bind(this)}
               deleteNote={this.deleteNote.bind(this)}
+              addAnnotation={this.addAnnotation.bind(this)}
+              deleteAnnotation={this.deleteAnnotation.bind(this)}
             />
           ))}
         </div>
