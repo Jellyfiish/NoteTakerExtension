@@ -25,21 +25,21 @@ In addition to the functionality of the original Noted application, the Jellyfii
 
 ### Users ###
 
-1. Install the [Noted Chrome extension](https://chrome.google.com/webstore/detail/noted/lfhnbpecbkhfahjfgllalgjjalediolj/related).
-1. Open the [Noted web app](https://noteextension.herokuapp.com/) in your browser, or use the Manage Account button in the Noted extension.
+1. Install the [Noted Chrome extension](https://chrome.google.com/webstore/detail/noted/nfjppfjcaoigcdpmgfokicepnmblhhfo).
+1. Open the [Noted web app](https://jellyfiish-noted.herokuapp.com/) in your browser, or use the Manage Account button in the Noted extension.
 
 ### Developers ###
 
 1. Clone the repo
 1. Run the `npm install` command from inside the `NoteTakerExtension/` directory to install the necessary dependencies.
-1. Install the Noted chrome extension either from the [Chrome Web Store](https://chrome.google.com/webstore/detail/noted/lfhnbpecbkhfahjfgllalgjjalediolj/related) or from [source](https://github.com/Jellyfiish/Chrome-NoteTakerExtension).
-1. Login to your [Auth0](https://auth0.com/) account.
+1. Install the Noted chrome extension either from the [Chrome Web Store](https://chrome.google.com/webstore/detail/noted/nfjppfjcaoigcdpmgfokicepnmblhhfo) or from [source](https://github.com/Jellyfiish/Chrome-NoteTakerExtension).
+1. If you prefer to use your own Auth0 account:
+  1. Login to your [Auth0](https://auth0.com/) account.
   1. Create a new Client from the Clients menu (select the Single Page Web Applications client type when prompted).
   1. Add the following URL to the list of Allowed Callback URLs: `https://<noted-extension-id>.chromiumapp.org/auth0`
     **Note: your extension id can be found in the Settings -> Extensions menu in your Chrome browser.**
   1. Add the following line to the list of Allow Origins (CORS): `chrome-extension://<noted-extension-id>/*`
-1. Make a new `config.js` file in the `NoteTakerExtension/config/` directory.
-  1. Replace the `AUTH0_CLIENT_ID` and `AUTH0_DOMAIN` values with those you received in the above step.
+  1. Replace the `AUTH0_CLIENT_ID` and `AUTH0_DOMAIN` values in the `NoteTakerExtension/config/config.js` file with those you received in the above step.
 1. Make sure your [MongoDB](https://www.mongodb.com/download-center#community) database server is running and listening on port 27017.
 1. Run the `npm run bundle` command from inside the `NoteTakerExtension/` directory to bundle the source files.
 1. Run `npm start` or `npm run start:watch` to start the server.
