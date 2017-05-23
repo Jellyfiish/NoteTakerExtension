@@ -47,10 +47,10 @@ In addition to the functionality of the original Noted application, the Jellyfii
 
 ## Usage ##
 
-1. Click the login button in the top left corner and sign in with your preferred credentials.
+1. Click the `Login` button in the top left corner and sign in with your preferred credentials.
 1. Click any URL to open that page in a new tab.
 1. Filter notes using the Filter field. Optionally, filter by URL and/or highlight color using the `site:` and `color:` selectors.
-1. Use the trash can icons on the right to delete individual notes or entire web pages from your account.
+1. Use the trash icons on the right to delete individual notes or entire web pages from your account.
 
 ## Contributing ##
 
