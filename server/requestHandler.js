@@ -123,7 +123,8 @@ exports.userAddNotes = function userAddNotes(req, res) {
       var pin = {
         text: req.body.note,
         color: req.body.color || 'yellow',
-        annotation: req.body.annotation || ''
+        annotation: req.body.annotation || '',
+        range: req.body.range
       };
 
       if(pages.includes(req.body.uri)) {
