@@ -84,12 +84,7 @@ class App extends React.Component {
   }
 
 //Add annotation to the note
-<<<<<<< HEAD
   addAnnotation(userId, uri, note, annotation) {
-=======
-  addAnnotation(userId, uri, note) {
-    var annotation = document.getElementById('new-annotation').value;
->>>>>>> 8e658a7aecaac93d987d32c638e3aed2ae79a0e5
     axios({
         method: "post",
         url: "/api/users/notes/annotations",
